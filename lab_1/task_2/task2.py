@@ -1,9 +1,7 @@
 """
 Модуль для частотного анализа и дешифровки текста.
 """
-
-ETAOIN = " ОЕАИНТСРВЛКМДПУЯЫЬГЗБЧЙХЖШЮЦЩЭФЪ"
-LETTERS = "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ "
+from key import DECRYPTION_KEY
 
 def read_file(path: str) -> str:
     ''' Читает файл и возвращает строку.'''
@@ -98,44 +96,11 @@ def main():
     text = read_file(path)
     cleanedText = text.replace('\n','').replace('\t','').replace(' ', '')
     frequencyOrder = getFrequencyOrder(cleanedText) #отсортированный по частоте список использованных в тексте букв
-    key = {'-': ' ',    
-    'U': 'О',
-    'd': 'Е',
-    'M': 'И',
-    'B': 'Т',
-    'Y': 'А',
-    '3': 'С',
-    '>': 'Н',
-    'E': 'В',
-    '9': 'Р',
-    't': 'Л',
-    '8': 'Ы',
-    'A': 'К',
-    'I': 'Д',
-    'K': 'М',
-    '!': 'Б',
-    'Q': 'П',
-    'h': 'У',
-    'P': 'Я',
-    'J': 'З',
-    '=': 'Ц',
-    'L': 'Ч',
-    '$': 'Х',
-    'C': 'Ю',
-    'G': 'Ь',
-    'W': 'Й',
-    'V': 'Э',
-    'F': 'Ш',
-    'R': 'Г',
-    'n': 'Щ',
-    'Z': 'Ж',
-    'O': 'Ф',
-    'x': 'Ъ' }
-
-    saveKey(key)
+    
+    saveKey(DECRYPTION_KEY)
     dechiper_text = ""
     for latter in cleanedText:
-        dechiper_text+=key[latter]
+        dechiper_text+=DECRYPTION_KEY[latter]
     saveResult(dechiper_text)
 
 if __name__ == '__main__':

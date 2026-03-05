@@ -15,7 +15,7 @@ def encryptMessageViginer(key, alphabet, message):
     message: сообщение которое надо зашифровать 
     '''
 
-    return translateMessage(key, alphabet, message, 'encrypt')
+    return translateMessageVig(key, alphabet, message, 'encrypt')
 
 def decryptMessageViginer(key, alphabet, message):
     '''Запускает функцию шифровки/расшифровки с параметром 'decrypt'
@@ -25,9 +25,9 @@ def decryptMessageViginer(key, alphabet, message):
     message: сообщение которое надо расшифровать  
     '''
 
-    return translateMessage(key, alphabet, message, 'decrypt')
+    return translateMessageVig(key, alphabet, message, 'decrypt')
 
-def translateMessage(key, alphabet, message, mode):
+def translateMessageVig(key, alphabet, message, mode):
     '''Функция шифровки/расшифровки сообщения алгоритмом Виженера
 
     key: ключ шифрования
