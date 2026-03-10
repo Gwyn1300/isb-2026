@@ -2,7 +2,7 @@
 #include<fstream>
 #include<random>
 
-int main(){
+int main(){      //random generator on c++ 
     std::ofstream file;
     file.open("../sequences/seq_cpp.txt");
     std::random_device rd;
