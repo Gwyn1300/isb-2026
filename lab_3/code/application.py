@@ -2,7 +2,8 @@ import sys
 import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from des import *
-from function import *
+from generation_key import *
+from file_operation import *
 
 
 class MyWin(QtWidgets.QMainWindow):
@@ -70,14 +71,15 @@ class MyWin(QtWidgets.QMainWindow):
         Returns:
             int: Размер ключа в байтах (8, 16 или 24) или None, если ничего не выбрано
         """
-        if self.ui.radioButton_64bit.isChecked():
-            return 8
-        elif self.ui.radioButton_128bit.isChecked():
-            return 16
-        elif self.ui.radioButton_192bit.isChecked():
-            return 24
-        else:
-            return None
+        match True:
+            case _ if self.ui.radioButton_64bit.isChecked():
+                return 8
+            case _ if self.ui.radioButton_128bit.isChecked():
+                return 16
+            case _ if self.ui.radioButton_192bit.isChecked():
+                return 24
+            case _:
+                return None
     
     def generate_keys(self):
         """Генерирует асимметричные (RSA) и симметричные ключи и сохраняет их в выбранную директорию"""
@@ -376,6 +378,7 @@ class MyWin(QtWidgets.QMainWindow):
             self.ui.lineEdit_path_result_2.setText(directory)
             self.update_status_decryption("Waiting for information...", None, None, None, None)
     
+    
     def decrypt_file(self):
         """Выполняет дешифрование файла"""
         self.ui.textEdit_3.clear()
@@ -418,11 +421,8 @@ class MyWin(QtWidgets.QMainWindow):
             return
         
         try:
-            with open(encrypted_sym_key_path, 'rb') as f:
-                encrypted_sym_key = f.read()
-            
-            with open(private_key_path, 'rb') as f:
-                private_key_data = f.read()
+            encrypted_sym_key = read_encrypted_key(encrypted_sym_key_path)
+            private_key_data = read_private_key(private_key_path)
             
             private_key = serialization.load_pem_private_key(
                 private_key_data,
@@ -485,6 +485,15 @@ class MyWin(QtWidgets.QMainWindow):
         self.ui.textEdit_3.clear()
         self.ui.textEdit_3.append(status_text)
 
+def read_encrypted_key(file_path):
+    """Чтение зашифрованного симметричного ключа из файла"""
+    with open(file_path, 'rb') as f:
+        return f.read()
+
+def read_private_key(file_path):
+    """Чтение приватного ключа из файла"""
+    with open(file_path, 'rb') as f:
+        return f.read()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
